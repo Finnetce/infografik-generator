@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infografik-Generator — Fintelligence</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0b0f;
+  color: #e4e4e7;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.header-brand {
+  font-size: 13px;
+  font-weight: 600;
+  color: #E3000F;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.header-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.header-sub {
+  font-size: 15px;
+  color: #71717a;
+  line-height: 1.5;
+}
+
+.form-section {
+  margin-bottom: 32px;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #a1a1aa;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.form-label-hint {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #52525b;
+  margin-left: 8px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 16px 20px;
+  background: #141519;
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  color: #e4e4e7;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #E3000F;
+}
+
+textarea::placeholder {
+  color: #3f3f46;
+}
+
+.option-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.option-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.option-grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+.option-card {
+  padding: 16px;
+  background: #141519;
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.option-card:hover {
+  border-color: #3f3f46;
+  background: #18191f;
+}
+
+.option-card.selected {
+  border-color: #E3000F;
+  background: #1a1012;
+}
+
+.option-card input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.option-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.option-desc {
+  font-size: 12px;
+  color: #71717a;
+  line-height: 1.4;
+}
+
+.option-pixels {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #52525b;
+  margin-top: 6px;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+input[type="email"], input[type="text"], select {
+  width: 100%;
+  padding: 12px 16px;
+  background: #141519;
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  color: #e4e4e7;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: border-color 0.2s;
+  appearance: none;
+}
+
+input[type="email"]:focus, input[type="text"]:focus, select:focus {
+  outline: none;
+  border-color: #E3000F;
+}
+
+input::placeholder { color: #3f3f46; }
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2371717a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+select option {
+  background: #141519;
+  color: #e4e4e7;
+}
+
+.divider {
+  height: 1px;
+  background: #1e1e24;
+  margin: 36px 0;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 16px 24px;
+  background: #E3000F;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background: #c7000d;
+  transform: translateY(-1px);
+}
+
+.btn-submit:disabled {
+  background: #27272a;
+  color: #52525b;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.status-bar {
+  margin-top: 16px;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 13px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-bar.loading {
+  display: flex;
+  background: #14171f;
+  border: 1px solid #1e2433;
+  color: #93c5fd;
+}
+
+.status-bar.success {
+  display: flex;
+  background: #0f1a14;
+  border: 1px solid #14392a;
+  color: #6ee7b7;
+}
+
+.status-bar.error {
+  display: flex;
+  background: #1a0f0f;
+  border: 1px solid #3b1414;
+  color: #fca5a5;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #1e3a5f;
+  border-top-color: #93c5fd;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.result-area {
+  margin-top: 32px;
+  display: none;
+}
+
+.result-area.visible { display: block; }
+
+.result-image-wrap {
+  background: #141519;
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.result-image-wrap img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-download, .btn-copy, .btn-new {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-download {
+  background: #00D4AA;
+  color: #0a0b0f;
+  border: none;
+}
+
+.btn-download:hover { background: #00eabb; }
+
+.btn-copy {
+  background: transparent;
+  color: #a1a1aa;
+  border: 1px solid #27272a;
+}
+
+.btn-copy:hover { border-color: #3f3f46; color: #e4e4e7; }
+
+.btn-new {
+  background: transparent;
+  color: #a1a1aa;
+  border: 1px solid #27272a;
+}
+
+.btn-new:hover { border-color: #3f3f46; color: #e4e4e7; }
+
+.config-note {
+  margin-top: 48px;
+  padding: 20px;
+  background: #141519;
+  border: 1px solid #27272a;
+  border-radius: 12px;
+  font-size: 12px;
+  color: #52525b;
+  line-height: 1.6;
+}
+
+.config-note code {
+  font-family: 'JetBrains Mono', monospace;
+  background: #1e1e24;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #a1a1aa;
+}
+
+@media (max-width: 640px) {
+  .option-grid-3 { grid-template-columns: 1fr; }
+  .option-grid-2 { grid-template-columns: 1fr; }
+  .input-row { grid-template-columns: 1fr; }
+  .result-actions { flex-direction: column; }
+  .header-title { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="header-brand">Fintelligence</div>
+    <div class="header-title">Infografik-Generator</div>
+    <div class="header-sub">Artikel einfügen, Format wählen, Grafik generieren. Branding und Layout werden automatisch angewendet.</div>
+  </div>
+
+  <form id="generator-form" onsubmit="handleSubmit(event)">
+
+    <!-- ARTIKELTEXT -->
+    <div class="form-section">
+      <label class="form-label">Artikeltext oder Inhalt</label>
+      <textarea id="article-text" placeholder="Artikeltext hier einfügen. Der gesamte Text wird analysiert und die relevanten Datenpunkte automatisch extrahiert..." required></textarea>
+    </div>
+
+    <!-- TEMPLATE-TYP -->
+    <div class="form-section">
+      <label class="form-label">Infografik-Typ</label>
+      <div class="option-grid option-grid-3">
+        <label class="option-card selected" onclick="selectOption(this, 'template')">
+          <input type="radio" name="template" value="earnings_snapshot" checked>
+          <div class="option-title">Earnings Snapshot</div>
+          <div class="option-desc">Quartalszahlen: EPS, Umsatz, Marge, Guidance. Für Earnings-Berichte.</div>
+        </label>
+        <label class="option-card" onclick="selectOption(this, 'template')">
+          <input type="radio" name="template" value="top5_scoreboard">
+          <div class="option-title">Top-5 Scoreboard</div>
+          <div class="option-desc">Ranking-Tabelle: Gewinner, Verlierer, Performance-Listen.</div>
+        </label>
+        <label class="option-card" onclick="selectOption(this, 'template')">
+          <input type="radio" name="template" value="aktien_analyse">
+          <div class="option-title">Aktien-Analyse</div>
+          <div class="option-desc">4-Quadranten-Layout: Geschäftsmodell, Zahlen, Chancen, Risiken.</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- EINSATZZWECK -->
+    <div class="form-section">
+      <label class="form-label">Einsatzzweck</label>
+      <div class="option-grid option-grid-2">
+        <label class="option-card selected" onclick="selectOption(this, 'purpose')">
+          <input type="radio" name="purpose" value="social" checked>
+          <div class="option-title">Social Media</div>
+          <div class="option-desc">Instagram, LinkedIn, TikTok</div>
+        </label>
+        <label class="option-card" onclick="selectOption(this, 'purpose')">
+          <input type="radio" name="purpose" value="magazin">
+          <div class="option-title">Magazin / Artikel</div>
+          <div class="option-desc">Einbettung in Artikel, Newsletter, PDF</div>
+        </label>
+      </div>
+    </div>
+
+    <!-- FORMAT -->
+    <div class="form-section">
+      <label class="form-label">Format</label>
+      <div class="option-grid option-grid-3">
+        <label class="option-card selected" onclick="selectOption(this, 'format')">
+          <input type="radio" name="format" value="square" checked>
+          <div class="option-title">Quadratisch</div>
+          <div class="option-desc">Instagram Feed, LinkedIn</div>
+          <div class="option-pixels">1080 × 1080 px</div>
+        </label>
+        <label class="option-card" onclick="selectOption(this, 'format')">
+          <input type="radio" name="format" value="landscape">
+          <div class="option-title">Querformat 16:9</div>
+          <div class="option-desc">Artikel, Newsletter</div>
+          <div class="option-pixels">1920 × 1080 px</div>
+        </label>
+        <label class="option-card" onclick="selectOption(this, 'format')">
+          <input type="radio" name="format" value="aktien_mag">
+          <div class="option-title">AktienMag</div>
+          <div class="option-desc">Magazin-Einbettung</div>
+          <div class="option-pixels">561 × 406 px</div>
+        </label>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- BRANDING + EMAIL ROW -->
+    <div class="form-section">
+      <div class="input-row">
+        <div>
+          <label class="form-label">Branding</label>
+          <select id="branding" name="branding">
+            <option value="finanzen_net">finanzen.net</option>
+            <option value="traderfox">TraderFox</option>
+            <option value="aktien_mag">aktien Magazin</option>
+            <option value="megatrend">MEGATREND Echtgeld-Depot</option>
+            <option value="tenbagger">TENBAGGER-MAGAZIN</option>
+            <option value="trader_zeitung">TraderZeitung</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Dateiformat</label>
+          <select id="filetype" name="filetype">
+            <option value="png">PNG (transparent-fähig)</option>
+            <option value="jpg">JPG (kleinere Datei)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="input-row">
+        <div>
+          <label class="form-label">E-Mail <span class="form-label-hint">optional, für Zustellung</span></label>
+          <input type="email" id="email" name="email" placeholder="name@traderfox.com">
+        </div>
+        <div>
+          <label class="form-label">Magazin-Ausgabe <span class="form-label-hint">optional</span></label>
+          <input type="text" id="ausgabe" name="ausgabe" placeholder="z.B. KW21 / Mai 2026">
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- SUBMIT -->
+    <button type="submit" class="btn-submit" id="btn-submit">
+      Infografik erstellen
+    </button>
+
+    <!-- STATUS -->
+    <div class="status-bar" id="status-bar">
+      <div class="spinner" id="spinner"></div>
+      <span id="status-text"></span>
+    </div>
+  </form>
+
+  <!-- RESULT -->
+  <div class="result-area" id="result-area">
+    <div class="result-image-wrap">
+      <img id="result-image" src="" alt="Generierte Infografik">
+    </div>
+    <div class="result-actions">
+      <a class="btn-download" id="btn-download-link" href="" download="infografik.png" target="_blank">PNG herunterladen</a>
+      <button class="btn-copy" onclick="copyUrl()">URL kopieren</button>
+      <button class="btn-new" onclick="resetForm()">Neue Grafik</button>
+    </div>
+  </div>
+
+  <!-- CONFIG NOTE -->
+  <div class="config-note">
+    <strong style="color: #71717a;">Setup:</strong> Die Webhook-URL wird in der Variable <code>WEBHOOK_URL</code> im Script konfiguriert.
+    Aktuell: Make.com Szenario-Webhook. Das Frontend kann lokal geöffnet, auf einem Server gehostet oder als
+    Airtable Interface eingebettet werden.
+  </div>
+</div>
+
+<script>
+// ========================================
+// KONFIGURATION — HIER WEBHOOK-URL EINTRAGEN
+// ========================================
+const WEBHOOK_URL = 'https://hook.eu1.make.com/g4qr6s8tcc2o6yqwdse1mo781y4thvic';
+
+// ========================================
+// BRANDING-PRESETS (CSS-Variablen pro Brand)
+// Werden an Make.com gesendet und in den
+// Claude System Prompt injiziert
+// ========================================
+const BRAND_PRESETS = {
+  finanzen_net: {
+    name: 'finanzen.net',
+    primary: '#E3000F',
+    secondary: '#1A1A2E',
+    accent: '#00D4AA',
+    bg: '#0F1117',
+    logo_text: 'finanzen.net',
+    font_display: 'Inter',
+    font_data: 'JetBrains Mono'
+  },
+  traderfox: {
+    name: 'TraderFox',
+    primary: '#FF6B00',
+    secondary: '#1A1A2E',
+    accent: '#00B4D8',
+    bg: '#0F1117',
+    logo_text: 'TraderFox',
+    font_display: 'Inter',
+    font_data: 'JetBrains Mono'
+  },
+  aktien_mag: {
+    name: 'aktien Magazin',
+    primary: '#E3000F',
+    secondary: '#1A1A2E',
+    accent: '#00D4AA',
+    bg: '#0F1117',
+    logo_text: 'aktien Magazin',
+    font_display: 'Inter',
+    font_data: 'JetBrains Mono'
+  },
+  megatrend: {
+    name: 'MEGATREND',
+    primary: '#E3000F',
+    secondary: '#1A1A2E',
+    accent: '#FFB800',
+    bg: '#0F1117',
+    logo_text: 'MEGATREND',
+    font_display: 'Inter',
+    font_data: 'JetBrains Mono'
+  },
+  tenbagger: {
+    name: 'TENBAGGER',
+    primary: '#E3000F',
+    secondary: '#1A1A2E',
+    accent: '#00D4AA',
+    bg: '#0F1117',
+    logo_text: 'TENBAGGER-MAGAZIN',
+    font_display: 'Inter',
+    font_data: 'JetBrains Mono'
+  },
+  trader_zeitung: {
+    name: 'TraderZeitung',
+    primary: '#E3000F',
+    secondary: '#1A1A2E',
+    accent: '#00D4AA',
+    bg: '#0F1117',
+    logo_text: 'TraderZeitung',
+    font_display: 'Inter',
+    font_data: 'JetBrains Mono'
+  }
+};
+
+// Format-Mapping
+const FORMAT_MAP = {
+  square:     { width: 1080, height: 1080, label: '1080×1080' },
+  landscape:  { width: 1920, height: 1080, label: '1920×1080' },
+  aktien_mag: { width: 561,  height: 406,  label: '561×406' }
+};
+
+// ========================================
+// UI-LOGIK
+// ========================================
+
+function selectOption(card, groupName) {
+  document.querySelectorAll(`input[name="${groupName}"]`).forEach(function(radio) {
+    radio.closest('.option-card').classList.remove('selected');
+  });
+  card.classList.add('selected');
+  card.querySelector('input[type="radio"]').checked = true;
+}
+
+function setStatus(type, text) {
+  var bar = document.getElementById('status-bar');
+  var spinner = document.getElementById('spinner');
+  var statusText = document.getElementById('status-text');
+
+  bar.className = 'status-bar ' + type;
+  statusText.textContent = text;
+  spinner.style.display = type === 'loading' ? 'block' : 'none';
+}
+
+function showResult(imageUrl) {
+  var resultArea = document.getElementById('result-area');
+  var resultImage = document.getElementById('result-image');
+  var downloadLink = document.getElementById('btn-download-link');
+
+  resultImage.src = imageUrl;
+  downloadLink.href = imageUrl;
+  resultArea.classList.add('visible');
+  resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  window._lastImageUrl = imageUrl;
+}
+
+function copyUrl() {
+  if (window._lastImageUrl) {
+    navigator.clipboard.writeText(window._lastImageUrl).then(function() {
+      var btn = document.querySelector('.btn-copy');
+      btn.textContent = 'Kopiert!';
+      setTimeout(function() { btn.textContent = 'URL kopieren'; }, 2000);
+    });
+  }
+}
+
+function resetForm() {
+  document.getElementById('result-area').classList.remove('visible');
+  document.getElementById('status-bar').className = 'status-bar';
+  document.getElementById('btn-submit').disabled = false;
+  document.getElementById('btn-submit').textContent = 'Infografik erstellen';
+  document.getElementById('article-text').value = '';
+  document.getElementById('article-text').focus();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ========================================
+// FORM SUBMIT → MAKE.COM WEBHOOK
+// ========================================
+
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  var btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Wird erstellt...';
+
+  // Collect form data
+  var articleText = document.getElementById('article-text').value.trim();
+  var template = document.querySelector('input[name="template"]:checked').value;
+  var purpose = document.querySelector('input[name="purpose"]:checked').value;
+  var format = document.querySelector('input[name="format"]:checked').value;
+  var branding = document.getElementById('branding').value;
+  var filetype = document.getElementById('filetype').value;
+  var email = document.getElementById('email').value.trim();
+  var ausgabe = document.getElementById('ausgabe').value.trim();
+
+  // Validate
+  if (!articleText || articleText.length < 50) {
+    setStatus('error', 'Bitte einen vollständigen Artikeltext einfügen (min. 50 Zeichen).');
+    btn.disabled = false;
+    btn.textContent = 'Infografik erstellen';
+    return;
+  }
+
+  if (WEBHOOK_URL === 'DEINE_MAKE_COM_WEBHOOK_URL_HIER') {
+    setStatus('error', 'Webhook-URL noch nicht konfiguriert. Bitte im Script-Bereich die WEBHOOK_URL setzen.');
+    btn.disabled = false;
+    btn.textContent = 'Infografik erstellen';
+    return;
+  }
+
+  // Build payload
+  var payload = {
+    article_text: articleText,
+    template_type: template,
+    purpose: purpose,
+    format: format,
+    viewport_width: FORMAT_MAP[format].width,
+    viewport_height: FORMAT_MAP[format].height,
+    filetype: filetype,
+    branding: BRAND_PRESETS[branding],
+    email: email || null,
+    metadata: {
+      magazin: BRAND_PRESETS[branding].name,
+      ausgabe: ausgabe || null,
+      submitted_at: new Date().toISOString()
+    }
+  };
+
+  setStatus('loading', 'Artikeltext wird analysiert...');
+
+  try {
+    // Step 1: Analyzing
+    await sleep(1500);
+    setStatus('loading', 'Datenpunkte werden extrahiert und Layout wird generiert...');
+
+    // Send to Make.com
+    var response = await fetch(WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      throw new Error('Webhook Response: ' + response.status + ' ' + response.statusText);
+    }
+
+    var data = await response.json();
+
+    // Expect { image_url: "https://hcti.io/v1/image/..." }
+    if (data.image_url) {
+      setStatus('success', 'Infografik erfolgreich erstellt. ' + FORMAT_MAP[format].label + ' px, ' + filetype.toUpperCase());
+      showResult(data.image_url);
+    } else if (data.url) {
+      setStatus('success', 'Infografik erfolgreich erstellt. ' + FORMAT_MAP[format].label + ' px, ' + filetype.toUpperCase());
+      showResult(data.url);
+    } else {
+      throw new Error('Keine Bild-URL in der Response erhalten.');
+    }
+
+  } catch (err) {
+    setStatus('error', 'Fehler: ' + err.message);
+    btn.disabled = false;
+    btn.textContent = 'Erneut versuchen';
+  }
+}
+
+function sleep(ms) {
+  return new Promise(function(resolve) { setTimeout(resolve, ms); });
+}
+</script>
+
+</body>
+</html>
