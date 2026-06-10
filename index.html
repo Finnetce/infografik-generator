@@ -494,7 +494,7 @@ select option {
       <img id="result-image" src="" alt="Generierte Infografik">
     </div>
     <div class="result-actions">
-      <a class="btn-download" id="btn-download-link" href="" download="infografik.png" target="_blank">PNG herunterladen</a>
+      <button class="btn-download" id="btn-download-link" onclick="downloadPng()">PNG herunterladen</button>
       <button class="btn-copy" onclick="copyUrl()">URL kopieren</button>
       <button class="btn-new" onclick="resetForm()">Neue Grafik</button>
     </div>
@@ -614,10 +614,7 @@ function setStatus(type, text) {
 function showResult(imageUrl) {
   var resultArea = document.getElementById('result-area');
   var resultImage = document.getElementById('result-image');
-  var downloadLink = document.getElementById('btn-download-link');
-
   resultImage.src = imageUrl;
-  downloadLink.href = imageUrl;
   resultArea.classList.add('visible');
   resultArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -632,6 +629,36 @@ function copyUrl() {
       setTimeout(function() { btn.textContent = 'URL kopieren'; }, 2000);
     });
   }
+}
+
+function downloadPng() {
+  var imageUrl = window._lastImageUrl;
+  if (!imageUrl) return;
+  var btn = document.getElementById('btn-download-link');
+  var label = btn ? btn.textContent : 'PNG herunterladen';
+  if (btn) btn.textContent = 'Lädt...';
+  var name = 'finanzen-net-infografik-' + new Date().toISOString().slice(0, 10) + '.png';
+  fetch(imageUrl, { mode: 'cors' })
+    .then(function(res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.blob();
+    })
+    .then(function(blob) {
+      var blobUrl = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(blobUrl);
+      if (btn) btn.textContent = label;
+    })
+    .catch(function(err) {
+      console.error('Download fehlgeschlagen:', err);
+      if (btn) btn.textContent = label;
+      window.open(imageUrl, '_blank');
+    });
 }
 
 function resetForm() {
